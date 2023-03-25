@@ -118,17 +118,10 @@ local hlattr = M.HlAttribute
 ---@param no_trans? boolean Don't translate the syntax group (follow links).
 ---@return hl.HlData?
 function M.get_hl(name, no_trans)
-  local hl
-
-  if no_trans then
-    hl = api.nvim__get_hl_defs(0)[name]
-  else
-    local id = api.nvim_get_hl_id_by_name(name)
-
-    if id then
-      hl = api.nvim_get_hl_by_id(id, true)
-    end
-  end
+  local hl = api.nvim_get_hl(0, {
+    name = name,
+    link = no_trans,
+  })
 
   if hl then
     if hl.foreground then hl.fg = string.format("#%06x", hl.foreground) end
